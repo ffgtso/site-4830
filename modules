@@ -1,5 +1,9 @@
-GLUON_SITE_FEEDS="ffac"
+GLUON_SITE_FEEDS="ffac ffgt"
 
 PACKAGES_FFAC_REPO=https://github.com/ffac/community-packages.git
 PACKAGES_FFAC_COMMIT=b74de3db2965a02603ec7b2a32b719c6418105a2
 PACKAGES_FFAC_BRANCH=master
+
+PACKAGES_FFGT_REPO=https://github.com/ffgtso/4830-packages-v2022.git
+PACKAGES_FFGT_COMMIT=a2a0fc6f4ea889bb1c624539fd63b405fdcb4af8
+PACKAGES_FFGT_BRANCH=master
