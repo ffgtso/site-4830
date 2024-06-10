@@ -30,16 +30,17 @@ GLUON_FEATURES := \
 
 GLUON_SITE_PACKAGES := \
     iwinfo \
-    ffac-ssid-changer \
-    ffac-autoupdater-wifi-fallback \
     respondd-module-airtime \
     tcpdump \
     mtr-json \
+    sipcalc \
+    ip-full \
+    ffac-ssid-changer \
+    ffac-autoupdater-wifi-fallback \
     ffgt-speedtest \
     ffgt-banner \
-    sipcalc \
-    ff-ap-timer \
-    ip-full
+    ffgt-nachtruhe \
+    ff-ap-timer
 
 # gluon-mesh-wireless-sae
 GLUON_FEATURES_standard := wireless-encryption-wpa3
