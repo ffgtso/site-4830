@@ -41,7 +41,7 @@ info:
 	@echo
 
 build: gluon-prepare
-    expr $$(cat buildnr.txt) + 1 > buildnr.txt
+    expr $(shell cat buildnr.txt) + 1 > buildnr.txt
 	cp OPKG_KEY_BUILD_DIR/* ${GLUON_BUILD_DIR}/openwrt || true
 	for target in ${GLUON_TARGETS}; do \
 		echo ""Building target $$target""; \
