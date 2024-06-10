@@ -1,7 +1,7 @@
 GLUON_SITE_FEEDS="ffac ffgt"
 
-PACKAGES_FFAC_REPO=https://github.com/ffac/community-packages.git
-PACKAGES_FFAC_COMMIT=b74de3db2965a02603ec7b2a32b719c6418105a2
+PACKAGES_FFAC_REPO=https://github.com/freifunk-gluon/community-packages.git
+PACKAGES_FFAC_COMMIT=d7554980f944273bb1e51c40a33aa6662130c6ab
 PACKAGES_FFAC_BRANCH=master
 
 PACKAGES_FFGT_REPO=https://github.com/ffgtso/4830-packages-v2022.git
