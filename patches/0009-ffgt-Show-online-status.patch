@@ -1,0 +1,41 @@
+From a1c2f0f8b5db43e488b3e7e855378304dcb2f90e Mon Sep 17 00:00:00 2001
+From: wusel <wusel+src@uu.org>
+Date: Sun, 12 Feb 2023 17:05:53 +0100
+Subject: [PATCH] =?UTF-8?q?Show=20online=20status,=20depends=20on=20ffgt?=
+ =?UTF-8?q?=20package=20=E2=80=94=20maybe=20move=20to=20package=20&=20modi?=
+ =?UTF-8?q?fy-at-upgrade=3F?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../files/lib/gluon/config-mode/view/theme/layout.html      | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/package/gluon-config-mode-theme/files/lib/gluon/config-mode/view/theme/layout.html b/package/gluon-config-mode-theme/files/lib/gluon/config-mode/view/theme/layout.html
+index 865ec2aa..33406cca 100644
+--- a/package/gluon-config-mode-theme/files/lib/gluon/config-mode/view/theme/layout.html
++++ b/package/gluon-config-mode-theme/files/lib/gluon/config-mode/view/theme/layout.html
+@@ -16,6 +16,11 @@ You may obtain a copy of the License at
+ 	local hostname = pretty_hostname.get(uci)
+ 	local release = util.readfile("/lib/gluon/release")
+ 
++	local onlinestate = "offline"
++	if unistd.access('/tmp/is_online') then
++		onlinestate=util.readfile("/tmp/is_online"):gsub("\.$","")
++		onlinestate=onlinestate:gsub("ipv". "IPv")
++	end
+ 	local root = node()
+ 	local rnode = node(unpack(request))
+ 
+@@ -112,6 +117,7 @@ You may obtain a copy of the License at
+ 				<% if release then %>
+ 				/ <%|release%>
+ 				<% end %>
++				&nbsp;&nbsp;&nbsp; (<%|onlinestate%>)
+ 			</a>
+ 		</div>
+ 
+-- 
+2.30.2
+

@@ -1,0 +1,29 @@
+From 934150e551bdb7f57475bc99b600f85fdf5d7c45 Mon Sep 17 00:00:00 2001
+From: FFGT Admins <wusel+ffgt@uu.org>
+Date: Wed, 10 May 2023 01:07:08 +0200
+Subject: [PATCH] Add netgear-wndrmacv2 back
+
+---
+ targets/ath79-generic | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/targets/ath79-generic b/targets/ath79-generic
+index 2162caee..ad3e8719 100644
+--- a/targets/ath79-generic
++++ b/targets/ath79-generic
+@@ -187,6 +187,12 @@ device('netgear-wnr2200-16m', 'netgear_wnr2200-16m', {
+ 	factory_ext = '.img',
+ })
+ 
++device('netgear-wndrmac-v2', 'netgear_wndrmac-v2', {
++	factory_ext = '.img',
++	manifest_aliases = {
++		'netgear-wndrmacv2', -- Upgrade from OpenWrt 19.07
++	},
++})
+ 
+ -- OCEDO
+ 
+-- 
+2.25.1
+

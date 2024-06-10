@@ -1,5 +1,6 @@
 ﻿##	gluon site.mk 4830.org
 GLUON_DEPRECATED=upgrade
+GLUON_MULTIDOMAIN=1
 
 GLUON_FEATURES := \
         autoupdater \
