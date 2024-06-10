@@ -8,16 +8,19 @@ OPKG_KEY_BUILD_DIR ?= ${HOME}/.key-build
 
 GLUON_TARGETS ?= $(shell cat targets | tr '\n' ' ')
 GLUON_AUTOUPDATER_BRANCH := stable
+GLUON_AUTOUPDATER_ENABLED := 1
 
-ifneq (,$(shell git describe --exact-match --tags 2>/dev/null))
-	GLUON_AUTOUPDATER_ENABLED := 1
-	GLUON_RELEASE := $(shell git describe --tags 2>/dev/null)
-else
-	GLUON_AUTOUPDATER_ENABLED := 1
-	EXP_FALLBACK = $(shell date '+%Y%m%d')
-	BUILD_NUMBER ?= $(EXP_FALLBACK)
-	GLUON_RELEASE := $(shell git describe --tags)~exp$(BUILD_NUMBER)
-endif
+#ifneq (,$(shell git describe --exact-match --tags 2>/dev/null))
+#	GLUON_AUTOUPDATER_ENABLED := 1
+#	GLUON_RELEASE := $(shell git describe --tags 2>/dev/null)
+#else
+#	GLUON_AUTOUPDATER_ENABLED := 1
+#	EXP_FALLBACK = $(shell date '+%Y%m%d')
+#	BUILD_NUMBER ?= $(EXP_FALLBACK)
+#	GLUON_RELEASE := $(shell git describe --tags)~exp$(BUILD_NUMBER)
+#endif
+
+GLUON_RELEASE := 1.6.1~$(shell cat buildnr.txt)
 
 JOBS ?= $(shell cat /proc/cpuinfo | grep processor | wc -l)
 
@@ -33,11 +36,12 @@ all: info
 info:
 	@echo
 	@echo '#########################'
-	@echo '# FFAC Firmware build'
+	@echo '# 4830.org Firmware build'
 	@echo '# Building release ${GLUON_RELEASE} for branch ${GLUON_AUTOUPDATER_BRANCH}'
 	@echo
 
 build: gluon-prepare
+    expr $$(cat buildnr.txt) + 1 > buildnr.txt
 	cp OPKG_KEY_BUILD_DIR/* ${GLUON_BUILD_DIR}/openwrt || true
 	for target in ${GLUON_TARGETS}; do \
 		echo ""Building target $$target""; \
