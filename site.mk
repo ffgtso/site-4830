@@ -1,4 +1,4 @@
-﻿##  gluon site.mk Freifunk Regio Aachen
+﻿##  gluon site.mk 4830.org
 
 # Build everything by default
 export BROKEN ?= 1
@@ -20,4 +20,4 @@ GLUON_AUTOUPDATER_ENABLED ?= 1
 GLUON_REGION ?= eu
 
 # Languages to include
-GLUON_LANGS ?= en de
+GLUON_LANGS ?= de en
