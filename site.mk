@@ -39,8 +39,8 @@ GLUON_SITE_PACKAGES := \
     ffac-autoupdater-wifi-fallback \
     ffgt-speedtest \
     ffgt-banner \
+    ff-ap-timer \
     ffgt-nachtruhe \
-    ff-ap-timer
 
 # gluon-mesh-wireless-sae
 GLUON_FEATURES_standard := wireless-encryption-wpa3
