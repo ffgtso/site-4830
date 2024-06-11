@@ -1,3 +1,26 @@
+#########################
+#### Custom Options: ####
+#########################
+# GLUON_RELEASE - customize full release name
+# BUILD_NUMBER - customize only the build number of the release name
+#########################
+# GLUON_TARGETS - choose which targets to build (delimited by spaces) e.g. "ath79-generic ramips-mt7621"
+# GLUON_DEVICES - choose which devices to build (delimited by spaces) e.g. "avm-fritz-box-4020 tp-link-tl-wdr4300-v1", moves images to devices/ instead of output/, no packages are copied to the devices/ folder
+# BROKEN - set to 0 to disable building devices marked as broken
+#########################
+# GLUON_PRIORITY - set update priority (integer)
+# GLUON_AUTOUPDATER_ENABLED - set to 0 to disable the autoupdater
+# GLUON_LANGS - set to subset of (en de fr) to include less languages
+#########################
+# JOBS - set number of threads manually
+# GLUON_DEBUG set to 1 to include debug symbols (requires at least 16MB of flash, advice: also set GLUON_DEVICES, run 'make clean' before executing if you care for all packages to be rebuilt with debug symbols)
+# GLUON_MINIFY set to 0 to disable minification of scripts (lua etc.)
+#########################
+# SECRET_KEY_FILE - Path to your ECDSA signing key
+# OPKG_KEY_FOLDER - Path to your OpenWrt package signing key
+#########################
+BROKEN ?= 0
+
 GLUON_BUILD_DIR := gluon-build
 GLUON_GIT_URL := https://github.com/freifunk-gluon/gluon.git
 GLUON_GIT_REF := v2022.1.4
@@ -22,10 +45,12 @@ GLUON_AUTOUPDATER_ENABLED := 1
 
 GLUON_RELEASE := 1.6.1~$(shell cat buildnr.txt)
 
-JOBS ?= $(shell cat /proc/cpuinfo | grep processor | wc -l)
+JOBS ?= $(shell cat /proc/cpuinfo | grep processor | wc -l | awk '{printf("%d", $1*1.5);}')
+MAKEFLAGS += --no-print-directory
+MAKEFLAGS += --output-sync
 
 GLUON_MAKE := ${MAKE} -j ${JOBS} --no-print-directory -C ${GLUON_BUILD_DIR} \
-    BROKEN=1 \
+    BROKEN=${BROKEN} \
 	GLUON_RELEASE=${GLUON_RELEASE} \
 	GLUON_AUTOUPDATER_BRANCH=${GLUON_AUTOUPDATER_BRANCH} \
 	GLUON_AUTOUPDATER_ENABLED=${GLUON_AUTOUPDATER_ENABLED}
@@ -43,21 +68,29 @@ info:
 build: gluon-prepare
 	./bumpnumber.sh buildnr.txt
 	cp OPKG_KEY_BUILD_DIR/* ${GLUON_BUILD_DIR}/openwrt || true
-	for target in ${GLUON_TARGETS}; do \
+	+for target in ${GLUON_TARGETS}; do \
+		echo ''; \
 		echo ""Building target $$target""; \
-		${GLUON_MAKE} download all GLUON_TARGET="$$target" CONFIG_JSON_ADD_IMAGE_INFO=1; \
+		date +%s >lastbuildstart; \
+		$(GLUON_MAKE) download all GLUON_TARGET="$$target" CONFIG_JSON_ADD_IMAGE_INFO=1 2>&1 >build_$${target}.log; \
+		makeRC=$$? ;\
+		./log_status.sh "$$target" $$makeRC ; \
+		echo "Done building target $$target with RC $$makeRC" ; \
+		if [ $$makeRC -ne 0 ]; then echo "*** Bailing out." ; break; fi; \
 	done
 	mkdir -p ${GLUON_BUILD_DIR}/output/opkg-packages
 	cp -r ${GLUON_BUILD_DIR}/openwrt/bin/packages ${GLUON_BUILD_DIR}/output/opkg-packages/gluon-4830-${GLUON_RELEASE}/
 
 manifest: build
-	for branch in experimental beta stable; do \
+	for branch in tng rawhide experimental testing stable; do \
 		${GLUON_MAKE} manifest GLUON_AUTOUPDATER_BRANCH=$$branch;\
 	done
 	mv -f ${GLUON_BUILD_DIR}/output/* ./output/
 
 sign: manifest
-	${GLUON_BUILD_DIR}/contrib/sign.sh ${SECRET_KEY_FILE} output/images/sysupgrade/${GLUON_AUTOUPDATER_BRANCH}.manifest
+	for branch in tng rawhide experimental testing stable; do \
+		${GLUON_BUILD_DIR}/contrib/sign.sh ${SECRET_KEY_FILE} output/images/sysupgrade/$$branch.manifest ;\
+	done
 
 ${GLUON_BUILD_DIR}:
 	git clone ${GLUON_GIT_URL} ${GLUON_BUILD_DIR}
