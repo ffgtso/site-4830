@@ -36,11 +36,12 @@ GLUON_SITE_PACKAGES := \
     sipcalc \
     ip-full \
     ffac-ssid-changer \
-    ffac-autoupdater-wifi-fallback \
-    ffgt-speedtest \
-    ffgt-banner \
-    ff-ap-timer \
-    ffgt-nachtruhe \
+    ffac-autoupdater-wifi-fallback
+#    \
+#   ffgt-speedtest \
+#   ffgt-banner \
+#   ff-ap-timer \
+#   ffgt-nachtruhe \
 
 # gluon-mesh-wireless-sae
 GLUON_FEATURES_standard := wireless-encryption-wpa3
