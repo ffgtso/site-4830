@@ -36,10 +36,9 @@ GLUON_SITE_PACKAGES := \
     sipcalc \
     ip-full \
     ffac-ssid-changer \
-    ffac-autoupdater-wifi-fallback
-#    \
-#   ffgt-speedtest \
-#   ffgt-banner \
+    ffac-autoupdater-wifi-fallback \
+    ffgt-speedtest \
+    ffgt-banner
 #   ff-ap-timer \
 #   ffgt-nachtruhe \
 

@@ -48,7 +48,7 @@ build: gluon-prepare
 		${GLUON_MAKE} download all GLUON_TARGET="$$target" CONFIG_JSON_ADD_IMAGE_INFO=1; \
 	done
 	mkdir -p ${GLUON_BUILD_DIR}/output/opkg-packages
-	cp -r ${GLUON_BUILD_DIR}/openwrt/bin/packages ${GLUON_BUILD_DIR}/output/opkg-packages/gluon-ffac-${GLUON_RELEASE}/
+	cp -r ${GLUON_BUILD_DIR}/openwrt/bin/packages ${GLUON_BUILD_DIR}/output/opkg-packages/gluon-4830-${GLUON_RELEASE}/
 
 manifest: build
 	for branch in experimental beta stable; do \
