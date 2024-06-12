@@ -4,7 +4,6 @@ GLUON_MULTIDOMAIN=1
 
 GLUON_FEATURES := \
         autoupdater \
-        config-mode-geo-location-osm \
         ebtables-filter-multicast \
         ebtables-filter-ra-dhcp \
         ebtables-limit-arp \
@@ -23,6 +22,9 @@ GLUON_FEATURES := \
 #		selection that would be enabled by default or due to the
 #		chosen feature flags
 
+#
+#        config-mode-geo-location-osm \
+#
 
 # -gluon-status-page
 #ffac-status-page
@@ -33,7 +35,8 @@ GLUON_SITE_PACKAGES := \
     ffac-ssid-changer \
     ffac-autoupdater-wifi-fallback \
     ffgt-speedtest \
-    ffgt-banner
+    ffgt-banner \
+    ffgt-config-mode-wizard
 #   ff-ap-timer \
 #   ffgt-nachtruhe \
 
