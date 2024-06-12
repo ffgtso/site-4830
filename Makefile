@@ -97,13 +97,23 @@ sign: manifest
 ${GLUON_BUILD_DIR}:
 	git clone ${GLUON_GIT_URL} ${GLUON_BUILD_DIR}
 
-gluon-prepare: output-clean ${GLUON_BUILD_DIR}
+gluon-clean-prepare: output-clean ${GLUON_BUILD_DIR}
 	cd ${GLUON_BUILD_DIR} \
 		&& git remote set-url origin ${GLUON_GIT_URL} \
 		&& git fetch --tags origin ${GLUON_GIT_REF} \
 		&& rm -rf packages \
 		&& git checkout -q --force ${GLUON_GIT_REF} \
 		&& git clean -fd;
+	ln -sfT .. ${GLUON_BUILD_DIR}/site
+	make gluon-patch
+	${GLUON_MAKE} update
+
+gluon-prepare: output-clean ${GLUON_BUILD_DIR}
+	cd ${GLUON_BUILD_DIR} \
+		&& git remote set-url origin ${GLUON_GIT_URL} \
+		&& git fetch --tags origin ${GLUON_GIT_REF} \
+		&& rm -rf packages \
+		&& git checkout -q --force ${GLUON_GIT_REF};
 	ln -sfT .. ${GLUON_BUILD_DIR}/site
 	make gluon-patch
 	${GLUON_MAKE} update
