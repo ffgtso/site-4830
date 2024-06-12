@@ -7,10 +7,11 @@ fi
 if [ ! -e lastbuildstart ]; then
     date +%s >lastbuildstart
 fi
+release="$3"
 curtgt=$(cat lfdtgtnr)
 last=$(cat lastbuildstart)
 now=$(date +%s)
 mins=$(expr ${now} - ${last})
 mins=$(expr ${mins} / 60)
-echo "$(printf "%2d: %-20s" ${curtgt} "$1") built with RC $2 at $(date), took $(printf "%2d" ${mins}) minutes" >> build-$3.log
+echo "$(printf "%2d: %-20s" ${curtgt} "$1") built with RC $2 at $(date), took $(printf "%2d" ${mins}) minutes" >> build-${release}.log
 expr ${curtgt} + 1 >lfdtgtnr
