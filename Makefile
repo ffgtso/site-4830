@@ -74,7 +74,7 @@ build: gluon-prepare
 		date +%s >lastbuildstart; \
 		$(GLUON_MAKE) download all GLUON_TARGET="$$target" CONFIG_JSON_ADD_IMAGE_INFO=1 2>&1 >build_$${target}.log; \
 		makeRC=$$? ;\
-		./log_status.sh "$$target" $$makeRC ; \
+		./log_status.sh "$$target" $$makeRC $${GLUON_RELEASE}; \
 		echo "Done building target $$target with RC $$makeRC" ; \
 		if [ $$makeRC -ne 0 ]; then echo "*** Bailing out." ; break; fi; \
 	done

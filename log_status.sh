@@ -12,5 +12,5 @@ last=$(cat lastbuildstart)
 now=$(date +%s)
 mins=$(expr ${now} - ${last})
 mins=$(expr ${mins} / 60)
-echo "$(printf "%2d: %-20s" ${curtgt} "$1") built with RC $2 at $(date), took $(printf "%2d" ${mins}) minutes" >> build_tmp/build-${RELEASE}.log
+echo "$(printf "%2d: %-20s" ${curtgt} "$1") built with RC $2 at $(date), took $(printf "%2d" ${mins}) minutes" >> build-$3.log
 expr ${curtgt} + 1 >lfdtgtnr
