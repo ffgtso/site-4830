@@ -68,6 +68,7 @@ info:
 build: gluon-prepare
 	./bumpnumber.sh buildnr.txt
 	cp OPKG_KEY_BUILD_DIR/* ${GLUON_BUILD_DIR}/openwrt || true
+	touch ${GLUON_BUILD_DIR}/openwrt/version.date || true
 	+for target in ${GLUON_TARGETS}; do \
 		echo ''; \
 		echo ""Building target $$target""; \
