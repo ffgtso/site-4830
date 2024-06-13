@@ -69,7 +69,7 @@ build: gluon-prepare
 	./bumpnumber.sh buildnr.txt
 	rm build*.log lfdtgtnr || true
 	cp OPKG_KEY_BUILD_DIR/* ${GLUON_BUILD_DIR}/openwrt || true
-	touch ${GLUON_BUILD_DIR}/openwrt/version.date || true
+	date +%s >${GLUON_BUILD_DIR}/openwrt/version.date || true
 	+for target in ${GLUON_TARGETS}; do \
 		echo ''; \
 		echo ""Building target $$target""; \
@@ -97,7 +97,7 @@ sign: manifest
 ${GLUON_BUILD_DIR}:
 	git clone ${GLUON_GIT_URL} ${GLUON_BUILD_DIR}
 
-gluon-clean-prepare: output-clean ${GLUON_BUILD_DIR}
+gluon-prepare: output-clean ${GLUON_BUILD_DIR}
 	cd ${GLUON_BUILD_DIR} \
 		&& git remote set-url origin ${GLUON_GIT_URL} \
 		&& git fetch --tags origin ${GLUON_GIT_REF} \
@@ -108,7 +108,7 @@ gluon-clean-prepare: output-clean ${GLUON_BUILD_DIR}
 	make gluon-patch
 	${GLUON_MAKE} update
 
-gluon-prepare: output-clean ${GLUON_BUILD_DIR}
+gluon-unclean-prepare: output-clean ${GLUON_BUILD_DIR}
 	cd ${GLUON_BUILD_DIR} \
 		&& git remote set-url origin ${GLUON_GIT_URL} \
 		&& git fetch --tags origin ${GLUON_GIT_REF} \
