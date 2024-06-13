@@ -36,8 +36,7 @@ GLUON_SITE_PACKAGES := \
     ffac-autoupdater-wifi-fallback \
     ffgt-speedtest \
     ffgt-banner \
-    ffgt-config-mode-wizard \
-    ffgt-geolocate
+    ffgt-config-mode-wizard
 #   ff-ap-timer \
 #   ffgt-nachtruhe \
 
