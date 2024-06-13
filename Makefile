@@ -49,7 +49,7 @@ JOBS ?= $(shell cat /proc/cpuinfo | grep processor | wc -l | awk '{printf("%d", 
 #MAKEFLAGS += --no-print-directory
 #MAKEFLAGS += --output-sync
 
-GLUON_MAKE := ${MAKE} -j ${JOBS} -C ${GLUON_BUILD_DIR} \
+GLUON_MAKE := ${MAKE} -j ${JOBS} V=sc -C ${GLUON_BUILD_DIR} \
 	BROKEN=${BROKEN} \
 	GLUON_RELEASE=${GLUON_RELEASE} \
 	GLUON_AUTOUPDATER_BRANCH=${GLUON_AUTOUPDATER_BRANCH} \
