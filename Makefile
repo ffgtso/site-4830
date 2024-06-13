@@ -46,8 +46,8 @@ GLUON_AUTOUPDATER_ENABLED := 1
 GLUON_RELEASE := 1.6.1~$(shell cat buildnr.txt)
 
 JOBS ?= $(shell cat /proc/cpuinfo | grep processor | wc -l | awk '{printf("%d", $$1*1.5);}')
-MAKEFLAGS += --no-print-directory
-MAKEFLAGS += --output-sync
+#MAKEFLAGS += --no-print-directory
+#MAKEFLAGS += --output-sync
 
 GLUON_MAKE := ${MAKE} -j ${JOBS} --no-print-directory -C ${GLUON_BUILD_DIR} \
     BROKEN=${BROKEN} \
