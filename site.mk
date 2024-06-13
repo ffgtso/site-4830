@@ -37,8 +37,7 @@ GLUON_SITE_PACKAGES := \
     ffgt-speedtest \
     ffgt-banner \
     ffgt-config-mode-wizard \
-    ffgt-geolocate \
-    ffgt-geolocator
+    ffgt-geolocate
 #   ff-ap-timer \
 #   ffgt-nachtruhe \
 
