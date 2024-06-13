@@ -84,7 +84,7 @@ build: gluon-prepare
 	cp -r ${GLUON_BUILD_DIR}/openwrt/bin/packages ${GLUON_BUILD_DIR}/output/opkg-packages/gluon-4830-${GLUON_RELEASE}/
 
 manifest: build
-	for branch in tng rawhide experimental testing stable; do \
+	+for branch in tng rawhide experimental testing stable; do \
 		${GLUON_MAKE} manifest GLUON_AUTOUPDATER_BRANCH=$$branch;\
 	done
 	mv -f ${GLUON_BUILD_DIR}/output/* ./output/
