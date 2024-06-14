@@ -36,7 +36,11 @@ GLUON_SITE_PACKAGES := \
     ffac-autoupdater-wifi-fallback \
     ffgt-speedtest \
     ffgt-banner \
-    ffgt-config-mode-wizard
+    ffgt-config-mode-wizard \
+    ffgt-preserve-mods \
+    gluon-tunneldigger-watchdog \
+    gluon-multi-radio
+#    gluon-pump \
 #   ff-ap-timer \
 #   ffgt-nachtruhe \
 
