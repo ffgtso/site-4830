@@ -88,6 +88,8 @@ manifest: build
 		${GLUON_MAKE} manifest GLUON_AUTOUPDATER_BRANCH=$$branch;\
 	done
 	mv -f ${GLUON_BUILD_DIR}/output/* ./output/
+	sed -e "s/@@RELEASE@@/${GLUON_RELEASE}/g" <ReleaseNotes >./output/images/factory/ReleaseNotes-${GLUON_RELEASE}
+	cat build-${GLUON_RELEASE}.log >>./output/images/factory/ReleaseNotes-${GLUON_RELEASE}
 
 sign: manifest
 	for branch in tng rawhide experimental testing stable; do \

@@ -11,12 +11,14 @@ includes some additional modules.
    1.1.5: v2018.2.x based, L2TP (tunneldigger)
    1.1.6: v2018.2.x based, VXLAN via Wireguard
    1.2.0: v2019.1.x based, L2TP (tunneldigger) (>= 1.2.0~38 includes the BROKEN gluon-migrate-ffbi)
-   1.2.5: v2019.1.x based, fastd+batman14 — FFUE-Migration
-   1.4.0: v2021.1.x based, L2TP (tunneldigger) (>= 1.4.0~48 includes a WORKING gluon-migrate-ffbiv2, ~50 fflg-migrate-to-multidomain)
-   1.5.0: v2022.1.x based, L2TP (tunneldigger)
-   1.6.0: v2023.2.x based, L2TP (tunneldigger)
+   1.2.5: v2019.1.x based, fastd+batman14 — FFUE-Migration (tested WiFi-Autoupdater, FW servers migration-firmware.ffue & .4830.org)
+   1.4.0: v2021.1.x based, L2TP (tunneldigger) (>= 1.4.0~48 includes a WORKING gluon-migrate-ffbiv2, ~50 fflg-migrate-to-multidomain, ca. ~120 ffue-migrate-to-multidomain)
+   1.5.0: v2022.1.x based, L2TP (tunneldigger) – tng only, short-lived tests
+   1.6.0: v2023.2.x based, L2TP (tunneldigger) – tng only, short-lived tests
+   1.6.1: v2022.1.4 based, L2TP (tunneldigger) — new build process, NO migration support anymore (FFBI, FFLG, FFUE), possibly migration support from FFLIP-FW
+   1.7.0: v2023.2.x based, L2TP (tunneldigger)
 
-For 1.5 and beyond, the patches applied to Gluon reside in site/patches and are applied against the plain Gluon tree at build time. Prior to that, we used a modified Gluon tree.
+For 1.5 and beyond, the patches applied to Gluon reside in site/patches and are applied against the plain Gluon tree at build time. Prior to that, we used a modified Gluon tree:
 
  - modified $GLUON/package/gluon-setup-mode/luasrc/lib/gluon/upgrade/320-setup-ifname
    and $GLUON/package/gluon-setup-mode/files/lib/gluon/setup-mode/rc.d/S20network so
@@ -106,6 +108,9 @@ For 1.5 and beyond, the patches applied to Gluon reside in site/patches and are 
 
    Migrates from FFLG-Firmware to Mesh "lbg" in the 4830-Firmware
 
+ - ffue-migrate-to-multidomain
+
+   Migrates from FFUE-Firmwares to Meshes "uel", "cel", "gif", lhw" or "uez" in the 4830-Firmware
 
 For further info check corresponding Gluon Release Notes.
 
