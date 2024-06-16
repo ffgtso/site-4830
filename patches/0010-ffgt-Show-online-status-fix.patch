@@ -1,0 +1,35 @@
+From df6ec257913b621ed77d0b081bb43299cf4e2745 Mon Sep 17 00:00:00 2001
+From: wusel <wusel+src@uu.org>
+Date: Mon, 13 Feb 2023 23:48:10 +0100
+Subject: [PATCH] Fix
+
+---
+ .../files/lib/gluon/config-mode/view/theme/layout.html      | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/package/gluon-config-mode-theme/files/lib/gluon/config-mode/view/theme/layout.html b/package/gluon-config-mode-theme/files/lib/gluon/config-mode/view/theme/layout.html
+index 33406cca..7e5111e8 100644
+--- a/package/gluon-config-mode-theme/files/lib/gluon/config-mode/view/theme/layout.html
++++ b/package/gluon-config-mode-theme/files/lib/gluon/config-mode/view/theme/layout.html
+@@ -12,14 +12,16 @@ You may obtain a copy of the License at
+ 	local pretty_hostname = require "pretty_hostname"
+ 	local uci  = require("simple-uci").cursor()
+ 	local util = require "gluon.util"
++	local unistd = require 'posix.unistd'
+ 
+ 	local hostname = pretty_hostname.get(uci)
+ 	local release = util.readfile("/lib/gluon/release")
+ 
+ 	local onlinestate = "offline"
+ 	if unistd.access('/tmp/is_online') then
+-		onlinestate=util.readfile("/tmp/is_online"):gsub("\.$","")
+-		onlinestate=onlinestate:gsub("ipv". "IPv")
++		onlinestate=util.readfile("/tmp/is_online")
++		onlinestate=onlinestate:gsub('\.\n', '')
++		onlinestate=onlinestate:gsub("ipv", "IPv")
+ 	end
+ 	local root = node()
+ 	local rnode = node(unpack(request))
+-- 
+2.30.2
+
