@@ -19,7 +19,7 @@
 # SECRET_KEY_FILE - Path to your ECDSA signing key
 # OPKG_KEY_FOLDER - Path to your OpenWrt package signing key
 #########################
-
+BROKEN ?= 0
 
 ## Setup Build environment variables
 include release.mk
@@ -31,22 +31,11 @@ PATCH_DIR := patches
 SECRET_KEY_FILE ?= $(HOME)/.gluon-secret-key
 OPKG_KEY_FOLDER ?= $(HOME)/.key-build
 
-## Create version scheme
-EXP_FALLBACK = $(shell date '+%Y%m%d')
-BUILD_NUMBER ?= $(EXP_FALLBACK)
-GIT_TAG := $(shell git describe --tags 2>/dev/null)
-ifeq (,$(GIT_TAG))
-ifndef GLUON_RELEASE
-$(error Set GLUON_RELEASE or create a git tag)
-endif
-endif
-ifneq (,$(shell git describe --exact-match --tags 2>/dev/null))
-	GLUON_RELEASE ?= $(GIT_TAG)
-else
-	GLUON_RELEASE ?= $(GIT_TAG)~exp$(BUILD_NUMBER)
-endif
+GLUON_RELEASE ?= $(shell cat ../baserelease.txt)$(shell cat ../buildnumber.txt)
 export GLUON_RELEASE
 
+GLUON_AUTOUPDATER_BRANCH := stable
+GLUON_AUTOUPDATER_ENABLED := 1
 
 ## Setup MAKE
 JOBS ?= $(shell cat /proc/cpuinfo | grep -c ^processor)
@@ -54,7 +43,7 @@ MAKEFLAGS += -j$(JOBS)
 MAKEFLAGS += --no-print-directory
 MAKEFLAGS += --output-sync
 
-GLUON_MAKE = $(MAKE) -C $(GLUON_BUILD_DIR)
+GLUON_MAKE = $(MAKE) V=sc -C $(GLUON_BUILD_DIR)
 GLUON_GIT = git -C $(GLUON_BUILD_DIR)
 
 
@@ -75,7 +64,7 @@ endif
 define INFO :=
 
 #########################
-# FFAC Firmware build
+# 4830.org Firmware build
 # building release '$(GLUON_RELEASE)'$(TARGETS_INFO)$(DEVICE_INFO)
 #########################
 # MAKEFLAGS:
@@ -125,7 +114,7 @@ ifdef DEVICE_INFO
 	@echo "make sign hasn't been designed to work while GLUON_DEVICES is set."
 	@exit 1
 endif
-	@for branch in experimental beta stable; do \
+	@for branch in tng rawhide experimental testing stable; do \
 		echo ''; \
 		echo ''Signing $$branch.manifest''; \
 		$(GLUON_BUILD_DIR)/contrib/sign.sh $(SECRET_KEY_FILE) output/images/sysupgrade/$$branch.manifest; \
@@ -136,17 +125,24 @@ endif
 # This allows communication of MAKEFLAGS like -j to submake.
 # https://stackoverflow.com/a/60706372/2721478
 manifest: build
-	+@for branch in experimental beta stable; do \
+	+@for branch in tng rawhide experimental testing stable; do \
 		echo ''; \
 		echo ''Creating $$branch manifest''; \
 		$(GLUON_MAKE) manifest GLUON_AUTOUPDATER_BRANCH=$$branch; \
 	done
+	sed -e "s/@@RELEASE@@/${GLUON_RELEASE}/g" <ReleaseNotes >output/images/factory/ReleaseNotes-${GLUON_RELEASE}
+	cat build-${GLUON_RELEASE}.log >>output/images/factory/ReleaseNotes-${GLUON_RELEASE}
 
 build: gluon-prepare output-clean
 	+@for target in $(GLUON_TARGETS); do \
 		echo ''; \
 		echo ''Building target $$target''; \
-		$(GLUON_MAKE) download all GLUON_TARGET=$$target CONFIG_JSON_ADD_IMAGE_INFO=1; \
+		date +%s >lastbuildstart; \
+		$(GLUON_MAKE) download all GLUON_TARGET="$$target" CONFIG_JSON_ADD_IMAGE_INFO=1 2>&1 >build_$${target}.log; \
+		makeRC=$$? ;\
+		./log_status.sh "$$target" $$makeRC ${GLUON_RELEASE}; \
+		echo "Done building target $$target with RC $$makeRC" ; \
+		if [ $$makeRC -ne 0 ]; then echo "*** Bailing out." ; break; fi; \
 	done
 	@if [ ! -f "$(OPKG_KEY_FOLDER)/key-build" ] && [ -f "$(GLUON_BUILD_DIR)/openwrt/key-build" ]; then \
 		echo 'Copying new opkg keys to $(OPKG_KEY_FOLDER)'; \
@@ -160,10 +156,10 @@ ifndef GLUON_DEVICES
 	rsync -a --exclude '*/base' --exclude '*/luci' --exclude '*/packages' --exclude '*/routing' --exclude '*/telephony' $(GLUON_BUILD_DIR)/openwrt/bin/packages/ output/packages/$(PACKAGES_BRANCH)/
 endif
 
-gluon-prepare: gluon-update ffac-patch | .modules
+gluon-prepare: gluon-update ffgt-patch | .modules
 
 PATCH_FILES = $(shell find $(PATCH_DIR)/ -type f -name '*.patch')
-ffac-patch: gluon-update
+ffgt-patch: gluon-update
 	@echo 'Applying patches…'
 	@if [ `$(GLUON_GIT) branch --list patched` ]; then \
 		$(GLUON_GIT) branch -D patched; \
@@ -179,10 +175,10 @@ ffac-patch: gluon-update
 	fi
 	@$(GLUON_GIT) branch -M patched
 
-.cmp-git-head: FORCE | ffac-patch
+.cmp-git-head: FORCE | ffgt-patch
 	@$(GLUON_GIT) rev-parse @{0} | cmp -s '$@' || $(GLUON_GIT) rev-parse @{0} > '$@'
 
-.modules: release.mk modules .cmp-git-head $(PATCH_DIR) $(PATCH_FILES) | ffac-patch
+.modules: release.mk modules .cmp-git-head $(PATCH_DIR) $(PATCH_FILES) | ffgt-patch
 	@echo
 	@echo Updating Gluon modules…
 	@rm -f .modules
@@ -295,4 +291,4 @@ FORCE: ;
 
 .SUFFIXES: ;
 
-.PHONY: all gluon-update sign manifest build gluon-prepare ffac-patch patch-prepare patch edit-patches update-patches gluon-clean output-clean
+.PHONY: all gluon-update sign manifest build gluon-prepare ffgt-patch patch-prepare patch edit-patches update-patches gluon-clean output-clean

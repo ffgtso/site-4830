@@ -1,35 +1,42 @@
-From 438a36abf851a323817c26b8e3b83d4fa3f5081d Mon Sep 17 00:00:00 2001
+From 9495efff51022ac8958f3bfffa55115af94d3491 Mon Sep 17 00:00:00 2001
 From: wusel <wusel+src@uu.org>
-Date: Tue, 14 Feb 2023 03:20:11 +0100
+Date: Sun, 16 Jun 2024 23:01:09 +0200
 Subject: [PATCH] Add community name
 
 ---
- .../files/lib/gluon/config-mode/view/admin/info.html         | 5 ++++-
+ package/gluon-core/luasrc/usr/lib/lua/gluon/info.lua | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/package/gluon-web-admin/files/lib/gluon/config-mode/view/admin/info.html b/package/gluon-web-admin/files/lib/gluon/config-mode/view/admin/info.html
-index 7e2c9e2d..3025a77f 100644
---- a/package/gluon-web-admin/files/lib/gluon/config-mode/view/admin/info.html
-+++ b/package/gluon-web-admin/files/lib/gluon/config-mode/view/admin/info.html
-@@ -7,7 +7,9 @@
- 	local platform = require 'gluon.platform'
- 	local util = require "gluon.util"
- 	local has_vpn, vpn = pcall(require, 'gluon.mesh-vpn')
+diff --git a/package/gluon-core/luasrc/usr/lib/lua/gluon/info.lua b/package/gluon-core/luasrc/usr/lib/lua/gluon/info.lua
+index 60df0f47..2c76bf11 100644
+--- a/package/gluon-core/luasrc/usr/lib/lua/gluon/info.lua
++++ b/package/gluon-core/luasrc/usr/lib/lua/gluon/info.lua
+@@ -7,7 +7,8 @@ local platform = require 'gluon.platform'
+ local util = require 'gluon.util'
+ local has_vpn, vpn = pcall(require, 'gluon.mesh-vpn')
+ local ethernet = require 'gluon.ethernet'
 -
-+	local uci = require('simple-uci').cursor()
-+	local core_domain = uci:get("gluon", "core", "domain") or "n/a"
-+	local communityname = string.gsub(util.exec(string.format("/lib/gluon/ffgt-geolocate/get_domain_name.sh %s", core_domain)),"\n", "") or "n/a"
- 	local _ = translate
- 
- 
-@@ -28,6 +30,7 @@
- 			.. " / " .. util.trim(util.readfile('/lib/gluon/site-version')) },
- 		{ _('Firmware release'), util.trim(util.readfile('/lib/gluon/release')) },
- 		{ _('Site'), site.site_name() },
-+		{ _('Mesh'), communityname },
- 		{ _('Public VPN key'), pubkey },
++local uci = require('simple-uci').cursor()
++	
+ local pubkey
+ if has_vpn and vpn.enabled() then
+ 	local _, active_vpn = vpn.get_active_provider()
+@@ -31,6 +32,7 @@ function M.get_info()
+ 		domain = uci:get('gluon', 'core', 'domain'),
+ 		public_vpn_key = pubkey,
+ 		switch_type = ethernet.get_switch_type(),
++		communityname = util.trim(string.gsub(util.exec(string.format("/lib/gluon/ffgt-geolocate/get_domain_name.sh %s", domain)),"\n", "")),
  	}
- -%>
+ end
+ 
+@@ -45,6 +47,7 @@ function M.get_info_pretty(_)
+ 		{ _('Firmware release'), data.firmware_release },
+ 		{ _('Site'), data.site },
+ 		{ _('Domain'), data.domain or 'n/a' },
++		{ _('Mesh'), data.communityname or 'n/a' },
+ 		{ _('Public VPN key'), data.public_vpn_key or 'n/a' },
+ 		{ _('Switch type'), data.switch_type },
+ 	}
 -- 
 2.30.2
 

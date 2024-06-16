@@ -1,6 +1,6 @@
-From 5d03cbaeb44a77b30f39e3e6b3b61fa4f719b52b Mon Sep 17 00:00:00 2001
+From ddab875781b3c36af3ff62259b577e30652211d6 Mon Sep 17 00:00:00 2001
 From: wusel <wusel+src@uu.org>
-Date: Sat, 4 Feb 2023 02:50:47 +0100
+Date: Sun, 16 Jun 2024 20:11:32 +0200
 Subject: [PATCH] Fix respondd to work on ff02::1 again
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH] Fix respondd to work on ff02::1 again
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/package/gluon-respondd/files/etc/init.d/gluon-respondd b/package/gluon-respondd/files/etc/init.d/gluon-respondd
-index c7b071eb..4e81332f 100755
+index c7b071eb..dd2eab4e 100755
 --- a/package/gluon-respondd/files/etc/init.d/gluon-respondd
 +++ b/package/gluon-respondd/files/etc/init.d/gluon-respondd
 @@ -13,7 +13,7 @@ start_service() {
@@ -16,7 +16,7 @@ index c7b071eb..4e81332f 100755
  
  	procd_open_instance
 -	procd_set_param command $DAEMON -d /usr/lib/respondd -p 1001 -g ff02::2:1001 $meshdevs -g ff05::2:1001 $clientdevs
-+    procd_set_param command $DAEMON -d /usr/lib/respondd -p 1001 -g ff02::1 $clientdevs $meshdevs -g ff02::2:1001 $meshdevs -g ff05::2:1001 $clientdevs
++	procd_set_param command $DAEMON -d /usr/lib/respondd -p 1001 -g ff02::2:1001 $meshdevs $clientdevs -g ff05::2:1001 $clientdevs -g ff02::1 $clientdevs
  	procd_set_param respawn ${respawn_threshold:-3600} ${respawn_timeout:-5} ${respawn_retry:-5}
  	procd_set_param stderr 1
  	procd_close_instance
