@@ -4,23 +4,30 @@ features {
     'ebtables-filter-ra-dhcp',
     'ebtables-limit-arp',
     'mesh-batman-adv-15',
-    'mesh-vpn-wireguard',
     'respondd',
     'status-page',
     'web-advanced',
     'web-wizard',
-    'config-mode-geo-location-osm',
     'radv-filterd',
     'radvd',
     'web-private-wifi',
 }
 
 packages {
+    'ff-mesh-vpn-tunneldigger',
     'iwinfo',
     'ffac-ssid-changer',
     'ffac-wg-registration',
     'ff-web-ap-timer',
     'respondd-module-airtime',
+    'ffac-ssid-changer',
+    'ffac-autoupdater-wifi-fallback',
+    'ffgt-speedtest',
+    'ffgt-banner',
+    'ffgt-config-mode-wizard',
+    'ffgt-preserve-mods',
+    'gluon-tunneldigger-watchdog',
+    'gluon-multi-radio'
 }
 
 if not device_class('tiny') then
@@ -107,11 +114,19 @@ pkgs_pci = {
     'kmod-bnx2', -- Broadcom NetExtreme BCM5706/5708/5709/5716
 }
 
+pkgs_4830 = {
+    'tcpdump',
+    'mtr-json',
+    'sipcalc'
+}
+
 include_usb = true
+include_4830 = true
 
 -- rtl838x has no USB support as of Gluon v2023.2
 if target('realtek', 'rtl838x') then
     include_usb = false
+    include_4830 = false
 end
 
 -- 7M usable firmware space + USB port
@@ -132,6 +147,7 @@ if target('ath79', 'generic') and not device({
     'tp-link-tl-wr1043n-v5',
 }) then
     include_usb = false
+    include_4830 = false
 end
 
 if target('ramips', 'mt76x8') and not device({
@@ -141,6 +157,7 @@ if target('ramips', 'mt76x8') and not device({
     'ravpower-rp-wd009',
 }) then
     include_usb = false
+    include_4830 = false
 end
 
 -- 7M usable firmware space + USB port
@@ -154,6 +171,7 @@ if device({
     'ravpower-rp-wd009'
 }) then
     include_usb = false
+    include_4830 = false
 end
 
 -- devices without usb ports
@@ -166,6 +184,7 @@ if device({
     'zyxel-nwa55axe',
 }) then
     include_usb = false
+    include_4830 = false
 end
 
 if include_usb then
@@ -173,6 +192,10 @@ if include_usb then
     packages(pkgs_usb_net)
     packages(pkgs_usb_serial)
     packages(pkgs_usb_storage)
+end
+
+if include_4830 then
+    packages(pkgs_4830)
 end
 
 -- device has no reset button and requires a special package to go into setup mode

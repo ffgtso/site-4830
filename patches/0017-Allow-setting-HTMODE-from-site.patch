@@ -1,0 +1,53 @@
+From c1b7b26df7755a4b9c719a412c617cf7fbcc48de Mon Sep 17 00:00:00 2001
+From: wusel <wusel+src@uu.org>
+Date: Mon, 12 Jun 2023 02:43:10 +0200
+Subject: [PATCH] Allow setting HTMODE from site
+
+---
+ .../luasrc/lib/gluon/upgrade/200-wireless     | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/package/gluon-core/luasrc/lib/gluon/upgrade/200-wireless b/package/gluon-core/luasrc/lib/gluon/upgrade/200-wireless
+index 604e33a8..b0b1e452 100755
+--- a/package/gluon-core/luasrc/lib/gluon/upgrade/200-wireless
++++ b/package/gluon-core/luasrc/lib/gluon/upgrade/200-wireless
+@@ -66,6 +66,8 @@ local function get_channel(radio, config)
+ end
+ 
+ local function get_htmode(radio)
++	local site_htmode
++
+ 	if radio.band == '5g' and is_outdoor() then
+ 		local outdoor_htmode = uci:get('gluon', 'wireless', 'outdoor_' .. radio['.name'] .. '_htmode')
+ 		if outdoor_htmode ~= nil then
+@@ -74,15 +76,22 @@ local function get_htmode(radio)
+ 	end
+ 
+ 	local phy = wireless.find_phy(radio)
+-	if iwinfo.nl80211.hwmodelist(phy).ax then
+-		return 'HE20'
++	if radio.band == '5g' then
++		site_htmode=site.wifi5.htmode('HT20')
++	else
++		site_htmode=site.wifi2.htmode('HT20')
+ 	end
+ 
+-	if iwinfo.nl80211.hwmodelist(phy).ac then
+-		return 'VHT20'
++	if iwinfo.nl80211.hwmodelist(phy).ax then
++		if site_htmode == 'VHT40' then
++			site_htmode="HE40"
++		end
+ 	end
++	uci:set('gluon', 'wireless', radio['.name'] .. '_htmode', site_htmode)
++	uci:save('gluon')
++	uci:commit('gluon')
+ 
+-	return 'HT20'
++	return site_htmode
+ end
+ 
+ local function is_disabled(name)
+-- 
+2.30.2
+

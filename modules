@@ -1,5 +1,9 @@
-GLUON_SITE_FEEDS="community"
+GLUON_SITE_FEEDS="community ffgt"
 
 PACKAGES_COMMUNITY_REPO=https://github.com/freifunk-gluon/community-packages.git
 PACKAGES_COMMUNITY_COMMIT=661f553c12785f3287fab6018487a55efda55071
 PACKAGES_COMMUNITY_BRANCH=master
+
+PACKAGES_FFGT_REPO=https://github.com/ffgtso/4830-packages-v2022.git
+PACKAGES_FFGT_COMMIT=b393295771577c1a1fcf9df7216b5975bc2eec6d
+PACKAGES_FFGT_BRANCH=master
