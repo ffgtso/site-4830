@@ -15,8 +15,8 @@ GLUON_FEATURES := \
         status-page \
         web-advanced \
         web-private-wifi \
-        web-cellular \
         web-wizard
+#        web-cellular \
 ##	GLUON_SITE_PACKAGES
 #		Specify additional Gluon/LEDE packages to include here;
 #		A minus sign may be prepended to remove a packages from the
