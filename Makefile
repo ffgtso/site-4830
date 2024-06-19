@@ -70,6 +70,7 @@ build: gluon-prepare
 		echo "Done building target $$target with RC $$makeRC" ; \
 		if [ $$makeRC -ne 0 ]; then echo "*** Bailing out." ; break; fi; \
 	done
+	rm ${GLUON_BUILD_DIR}/openwrt/version.date || true
 	mkdir -p ${GLUON_BUILD_DIR}/output/opkg-packages
 	cp -r ${GLUON_BUILD_DIR}/openwrt/bin/packages ${GLUON_BUILD_DIR}/output/opkg-packages/gluon-4830-${GLUON_RELEASE}/
 
