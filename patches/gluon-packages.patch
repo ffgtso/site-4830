@@ -1,0 +1,13 @@
+diff --git a/modules b/modules
+index 333b29b2..a9d9cd11 100644
+--- a/modules
++++ b/modules
+@@ -2,7 +2,7 @@
+ 
+ OPENWRT_REPO=https://github.com/openwrt/openwrt.git
+ OPENWRT_BRANCH=openwrt-22.03
+-OPENWRT_COMMIT=e500494771537b9f42f78e4d907bed18b6383606
++OPENWRT_COMMIT=f372b715d439d03d81755062d77f80eb4ce77e33
+ 
+ PACKAGES_PACKAGES_REPO=https://github.com/openwrt/packages.git
+ PACKAGES_PACKAGES_BRANCH=openwrt-22.03
