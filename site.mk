@@ -40,6 +40,7 @@ GLUON_SITE_PACKAGES := \
     ffgt-config-mode-wizard \
     ffgt-preserve-mods \
     gluon-tunneldigger-watchdog \
+    gluon-alfred \
     gluon-multi-radio
 #    gluon-pump \
 #   ff-ap-timer \
