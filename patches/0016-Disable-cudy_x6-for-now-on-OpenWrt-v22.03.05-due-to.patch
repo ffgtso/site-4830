@@ -1,0 +1,31 @@
+From 82e15ea9b13623c52c5881d9c5ee6cb8b88ba0a2 Mon Sep 17 00:00:00 2001
+From: FFGT Admins <wusel+ffgt@uu.org>
+Date: Sat, 3 Jun 2023 00:08:45 +0200
+Subject: [PATCH] Disable cudy_x6 for now on OpenWrt v22.03.05 due to:
+
+  * unable to enable device 'cudy_x6-v1'
+  * unable to enable device 'cudy_x6-v2'
+---
+ targets/ramips-mt7621 | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/targets/ramips-mt7621 b/targets/ramips-mt7621
+index 46afa067..b25a4443 100644
+--- a/targets/ramips-mt7621
++++ b/targets/ramips-mt7621
+@@ -17,10 +17,12 @@ device('cudy-wr2100', 'cudy_wr2100', {
+ 
+ device('cudy-x6-v1', 'cudy_x6-v1', {
+ 	factory = false,
++	broken = true, -- fails to build on openwrt 22.03.05
+ })
+ 
+ device('cudy-x6-v2', 'cudy_x6-v2', {
+ 	factory = false,
++	broken = true, -- fails to build on openwrt 22.03.05
+ })
+ 
+ 
+-- 
+2.25.1
+
