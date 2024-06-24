@@ -1,0 +1,187 @@
+From 1178b7f807e3af24db4b4f3e6612c2dae76f117e Mon Sep 17 00:00:00 2001
+From: FFGT Admins <info@4830.org>
+Date: Thu, 22 Jun 2023 22:29:04 +0000
+Subject: [PATCH] Add ramips-fix-green-LED-for-D-Link-DAP-X1860.patch
+
+---
+ ...s-fix-green-LED-for-D-Link-DAP-X1860.patch | 168 ++++++++++++++++++
+ 1 file changed, 168 insertions(+)
+ create mode 100644 patches/openwrt/0900-ramips-fix-green-LED-for-D-Link-DAP-X1860.patch
+
+diff --git a/patches/openwrt/0900-ramips-fix-green-LED-for-D-Link-DAP-X1860.patch b/patches/openwrt/0900-ramips-fix-green-LED-for-D-Link-DAP-X1860.patch
+new file mode 100644
+index 00000000..e3ec9ccc
+--- /dev/null
++++ b/patches/openwrt/0900-ramips-fix-green-LED-for-D-Link-DAP-X1860.patch
+@@ -0,0 +1,168 @@
++From patchwork Sun Apr 23 13:40:34 2023
++Content-Type: text/plain; charset="utf-8"
++MIME-Version: 1.0
++Content-Transfer-Encoding: 7bit
++X-Patchwork-Submitter: Sebastian Schaper <openwrt@sebastianschaper.net>
++X-Patchwork-Id: 1772458
++Return-Path: 
++ <openwrt-devel-bounces+incoming=patchwork.ozlabs.org@lists.openwrt.org>
++X-Original-To: incoming@patchwork.ozlabs.org
++Delivered-To: patchwork-incoming@legolas.ozlabs.org
++Authentication-Results: legolas.ozlabs.org;
++ spf=none (no SPF record) smtp.mailfrom=lists.openwrt.org
++ (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org;
++ envelope-from=openwrt-devel-bounces+incoming=patchwork.ozlabs.org@lists.openwrt.org;
++ receiver=<UNKNOWN>)
++Authentication-Results: legolas.ozlabs.org;
++	dkim=pass (2048-bit key;
++ secure) header.d=lists.infradead.org header.i=@lists.infradead.org
++ header.a=rsa-sha256 header.s=bombadil.20210309 header.b=IBiMoOW1;
++	dkim-atps=neutral
++Received: from bombadil.infradead.org (bombadil.infradead.org
++ [IPv6:2607:7c80:54:3::133])
++	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
++	 key-exchange X25519 server-signature ECDSA (P-384) server-digest SHA384)
++	(No client certificate requested)
++	by legolas.ozlabs.org (Postfix) with ESMTPS id 4Q48cX2Kf4z23tt
++	for <incoming@patchwork.ozlabs.org>; Sun, 23 Apr 2023 23:43:55 +1000 (AEST)
++DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
++	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
++	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
++	List-Archive:List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:Cc
++	:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
++	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
++	List-Owner; bh=h5p/8aXdnul6hwkTpRlSUPbzTW1mGjLkRKr4bqqJkKw=; b=IBiMoOW17Y8Ffl
++	WOM7XGqdZdmohYG85lvDr+sIer1Lvv/3QPG6w4soR7zf2Peykhks+Z4zLSWFFAjMeX+vS+x53g5GH
++	l0Bf2QaoauTSjNsqA8/mjZkm+fiR0dHFTwupeI0FER3D6zkesYOPR30OfahoJs/KJv/gum9F2vq2E
++	Xc8J2rpz0O17zslCR+gqdI1Gf1D5KsMDLR1pv9Byu3ttAJDdhzyiegTdVGk4KqLdL0byIb7ti0cT4
++	PAILK6TrajeK22MzRuD3GM+EU9ZNxCPg/XCLN8hu9/Ks5Ctd+uxKIB9sGzS85i3Aka4AeLVcrOwIg
++	GA4SCMq0+7bcG6MMw7Wg==;
++Received: from localhost ([::1] helo=bombadil.infradead.org)
++	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
++	id 1pqZxd-00EMoL-0s;
++	Sun, 23 Apr 2023 13:41:01 +0000
++Received: from mout.kundenserver.de ([212.227.17.13])
++	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
++	id 1pqZxZ-00EMns-1W
++	for openwrt-devel@lists.openwrt.org;
++	Sun, 23 Apr 2023 13:40:59 +0000
++Received: from sebastian-msi.fritz.box ([91.8.127.18]) by
++ mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
++ id 1N1wdj-1qJ58a42CP-012K9K; Sun, 23 Apr 2023 15:40:42 +0200
++From: Sebastian Schaper <openwrt@sebastianschaper.net>
++To: openwrt-devel@lists.openwrt.org
++Cc: David Bauer <mail@david-bauer.net>,
++	Jan-Niklas Burfeind <git@aiyionpri.me>,
++	Sebastian Schaper <openwrt@sebastianschaper.net>
++Subject: [PATCH] ramips: fix green LED for D-Link DAP-X1860
++Date: Sun, 23 Apr 2023 15:40:34 +0200
++Message-Id: <20230423134034.392771-1-openwrt@sebastianschaper.net>
++X-Mailer: git-send-email 2.34.1
++MIME-Version: 1.0
++X-Provags-ID: V03:K1:UfB+QpWG4liSe8cEDpcXivX6aSlp0rSWjPEPA/udmpPdRuQ/F8F
++ ZVBDryLRK7Q019zFfMGzquUAEtPc0hMP6PTrabRRnPZGXbU4Zknknhju0uwT7UDj8b0B1LM
++ X7ShHSRHKjary+RjAxi+Z2ipgqGbIy14g5fYc7yCqoZk1HdPpvKgKv8f8bjfEOOOEfpEsJG
++ /UBUikgbIvlLHnsNM2cNw==
++X-Spam-Flag: NO
++UI-OutboundReport: notjunk:1;M01:P0:LiqMeU40jQ4=;5XsuIpYtqFJYzK6Avb6k2q7IWte
++ K9cSjeK+5uAyrL4LrCLmck6T+YBMHbTLg0kwAvoNBXPUJzMPj96ol/IbqMl3m63q+VFytIdFq
++ lH4f14BERdB0Qsm7rVDSWEeuwZM8MhQ3rlm4IH2tnwyjhy5kDYB4JU8AR7ctrr1GX0WV6PX8K
++ cI98JSnX312+wFLEbc3eehGJyzGyIwMBrtVTGT4wN/+gjp+ELnK73aPBbhwRgD5t/i9Xr0lPD
++ k/Ha2oMf4v2USwkwvomLQIXdkrnotdBzTvv9xbUOGbgGYm3Wj7qE6VSk2BccadUNWm6QPEMvt
++ TQJCkphNM6NxsubQ4fdE4+JPbzlWU6nVZmnBdvQjaWvuiIjIELFWE+Q/qRRPOl1N5fdNMuZuv
++ 688zdJA8V7fayC4mWtWPBK6W0D0ACtVRYieCUAm4hXNw/mKijfy57hRyiUihgjloDI8mgII8I
++ zIpWD1JxQF0gbJ5LA3L0HOG5jzAi9NIoCkr4kQ6lQc5VyQ0lEmlVJ4mcLkaauX70B9R9Qcsh3
++ 1BIHDN5mAlfe759OOdZ+opKwCUoMZgGSA9jr3hic6RliryGi0pH1Avi7uLCUvE8L/1T2G3Ahp
++ OeH8HeF+XsHLcS2DLg+VNwtA+0QeqHTZ3O804O7qhjiKMLOIkS8d24AMknOvxmrr+susjFKKv
++ eQSO7PMYZlmh84hg93+ncGzGO8ZO3CsXGRjB0+5yrg==
++X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
++X-CRM114-CacheID: sfid-20230423_064057_811030_FCFC39A0 
++X-CRM114-Status: UNSURE (   8.07  )
++X-CRM114-Notice: Please train this message.
++X-Spam-Score: -0.0 (/)
++X-Spam-Report: Spam detection software,
++ running on the system "bombadil.infradead.org",
++ has NOT identified this incoming email as spam.  The original
++ message has been attached to this so you can view it or label
++ similar future email.  If you have any questions, see
++ the administrator of that system for details.
++ Content preview:  It was found this device uses a single tri-color
++ power/status
++    LED rather than individual red/orange LEDs, which also supports green. Add
++    GPIO for green color and use with `boot` and `running` aliases.
++ Content analysis details:   (-0.0 points, 5.0 required)
++  pts rule name              description
++ ---- ----------------------
++ --------------------------------------------------
++ -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/,
++                              no trust
++                             [212.227.17.13 listed in list.dnswl.org]
++ -0.0 SPF_PASS               SPF: sender matches SPF record
++  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
++ -0.0 RCVD_IN_MSPIKE_H2      RBL: Average reputation (+2)
++                             [212.227.17.13 listed in wl.mailspike.net]
++X-BeenThere: openwrt-devel@lists.openwrt.org
++X-Mailman-Version: 2.1.34
++Precedence: list
++List-Id: OpenWrt Development List <openwrt-devel.lists.openwrt.org>
++List-Unsubscribe: <https://lists.openwrt.org/mailman/options/openwrt-devel>,
++ <mailto:openwrt-devel-request@lists.openwrt.org?subject=unsubscribe>
++List-Archive: <http://lists.openwrt.org/pipermail/openwrt-devel/>
++List-Post: <mailto:openwrt-devel@lists.openwrt.org>
++List-Help: <mailto:openwrt-devel-request@lists.openwrt.org?subject=help>
++List-Subscribe: <https://lists.openwrt.org/mailman/listinfo/openwrt-devel>,
++ <mailto:openwrt-devel-request@lists.openwrt.org?subject=subscribe>
++Sender: "openwrt-devel" <openwrt-devel-bounces@lists.openwrt.org>
++Errors-To: 
++ openwrt-devel-bounces+incoming=patchwork.ozlabs.org@lists.openwrt.org
++
++It was found this device uses a single tri-color power/status LED
++rather than individual red/orange LEDs, which also supports green.
++
++Add GPIO for green color and use with `boot` and `running` aliases.
++
++Signed-off-by: Sebastian Schaper <openwrt@sebastianschaper.net>
++Reviewed-by: Philip Prindeville <philipp@redfish-solutions.com>
++---
++ .../linux/ramips/dts/mt7621_dlink_dap-x1860-a1.dts  | 13 +++++++++----
++ 1 file changed, 9 insertions(+), 4 deletions(-)
++
++diff --git a/target/linux/ramips/dts/mt7621_dlink_dap-x1860-a1.dts b/target/linux/ramips/dts/mt7621_dlink_dap-x1860-a1.dts
++index 1aa3f7c91b..818d2d8c41 100644
++--- a/target/linux/ramips/dts/mt7621_dlink_dap-x1860-a1.dts
+++++ b/target/linux/ramips/dts/mt7621_dlink_dap-x1860-a1.dts
++@@ -15,9 +15,9 @@
++ 
++ 	aliases {
++ 		label-mac-device = &gmac0;
++-		led-boot = &led_power_orange;
+++		led-boot = &led_power_green;
++ 		led-failsafe = &led_power_red;
++-		led-running = &led_power_orange;
+++		led-running = &led_power_green;
++ 		led-upgrade = &led_power_red;
++ 	};
++ 
++@@ -40,15 +40,20 @@
++ 	leds {
++ 		compatible = "gpio-leds";
++ 
+++		led_power_green: power_green {
+++			label = "green:power";
+++			gpios = <&gpio 3 GPIO_ACTIVE_LOW>;
+++			default-state = "on";
+++		};
+++
++ 		led_power_red: power_red {
++ 			label = "red:power";
++ 			gpios = <&gpio 7 GPIO_ACTIVE_LOW>;
++ 		};
++ 
++-		led_power_orange: power_orange {
+++		power_orange {
++ 			label = "orange:power";
++ 			gpios = <&gpio 8 GPIO_ACTIVE_LOW>;
++-			default-state = "on";
++ 		};
++ 
++ 		rssihigh {
+-- 
+2.30.2
+

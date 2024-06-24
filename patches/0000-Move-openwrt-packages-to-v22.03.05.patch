@@ -1,0 +1,30 @@
+From 1654644c7ea4897cb7d76a7e78e850c7de9d82a0 Mon Sep 17 00:00:00 2001
+From: FFGT Admins <wusel+ffgt@uu.org>
+Date: Fri, 2 Jun 2023 16:22:03 +0200
+Subject: [PATCH] Move openwrt & packages to v22.03.05
+
+---
+ modules | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/modules b/modules
+index 333b29b2..4179a7c4 100644
+--- a/modules
++++ b/modules
+@@ -2,11 +2,11 @@ GLUON_FEEDS='packages routing gluon'
+ 
+ OPENWRT_REPO=https://github.com/openwrt/openwrt.git
+ OPENWRT_BRANCH=openwrt-22.03
+-OPENWRT_COMMIT=e500494771537b9f42f78e4d907bed18b6383606
++OPENWRT_COMMIT=863f769b75beb17b1965786f473b700e0ba0f879
+ 
+ PACKAGES_PACKAGES_REPO=https://github.com/openwrt/packages.git
+ PACKAGES_PACKAGES_BRANCH=openwrt-22.03
+-PACKAGES_PACKAGES_COMMIT=55eed1761207f4dfdb8e7d79138f6f65c8849b50
++PACKAGES_PACKAGES_COMMIT=7c4ce83613d151dff38097abbc034ad2c8c9cb83
+ 
+ PACKAGES_ROUTING_REPO=https://github.com/openwrt/routing.git
+ PACKAGES_ROUTING_BRANCH=openwrt-22.03
+-- 
+2.25.1
+
