@@ -41,7 +41,8 @@ GLUON_SITE_PACKAGES := \
     ffgt-preserve-mods \
     gluon-tunneldigger-watchdog \
     gluon-alfred \
-    gluon-multi-radio
+    gluon-multi-radio \
+   ff-ap-timer
 #    gluon-pump \
 #   ff-ap-timer \
 #   ffgt-nachtruhe \
