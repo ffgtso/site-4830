@@ -16,9 +16,9 @@ index 83b4a128..739bfcb8 100644
  device('linksys-ea6350v3', 'linksys_ea6350v3')
  
 +device('linksys-ea8300-dallas', 'linksys_ea8300', {
-+	packages = { -- Note: Gluon does not support third radio
-+	'-ath10k-firmware-qca9888-ct',
-+	'-ath10k-board-qca9888',
++	packages = {
++	'ipq-wifi-linksys_ea8300',
++	'kmod-usb-ledtrig-usbport',
 +	},
 +	-- broken = true,
 +	-- 3rd WiFi radio not supported (5GHz DFS channels 100+)
@@ -26,9 +26,9 @@ index 83b4a128..739bfcb8 100644
 +})
 +
 +device('linksys-mr8300-dallas', 'linksys_mr8300', {
-+	packages = { -- Note: Gluon does not support third radio
-+	'-ath10k-firmware-qca9888-ct',
-+	'-ath10k-board-qca9888',
++	packages = {
++	'ipq-wifi-linksys_mr8300-v0',
++	'kmod-usb-ledtrig-usbport',
 +	},
 +	-- broken = true,
 +	-- 3rd WiFi radio not supported (5GHz DFS channels 100+)
