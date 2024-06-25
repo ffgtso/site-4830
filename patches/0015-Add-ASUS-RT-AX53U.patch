@@ -1,0 +1,25 @@
+From 8d605081cdeb637abaa14171a8454f63619219eb Mon Sep 17 00:00:00 2001
+From: wusel <wusel+src@uu.org>
+Date: Tue, 25 Jun 2024 02:42:14 +0200
+Subject: [PATCH] Add ASUS RT-AX53U
+
+---
+ targets/ramips-mt7621 | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/targets/ramips-mt7621 b/targets/ramips-mt7621
+index b0c4192b..bb69d1c5 100644
+--- a/targets/ramips-mt7621
++++ b/targets/ramips-mt7621
+@@ -4,6 +4,8 @@ device('asus-rt-ac57u', 'asus_rt-ac57u', {
+ 	factory = false,
+ })
+ 
++device('asus-rt-ax53u', 'asus_rt-ax53u')
++
+ 
+ -- Cudy
+ 
+-- 
+2.30.2
+
