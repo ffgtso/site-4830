@@ -275,7 +275,7 @@ index 00000000..1910abf2
 ++++ b/target/linux/ramips/image/mt7621.mk
 +@@ -9,6 +9,14 @@ DEFAULT_SOC := mt7621
 + 
-+ DEVICE_VARS += ELECOM_HWNAME LINKSYS_HWNAME DLINK_HWID
++ DEVICE_VARS += ELECOM_HWNAME LINKSYS_HWNAME
 + 
 ++define Build/append-dlink-covr-metadata
 ++	echo -ne '{"supported_devices": "$(1)", "firmware": "' > $@metadata.tmp
