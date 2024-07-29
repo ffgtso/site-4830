@@ -42,7 +42,8 @@ GLUON_SITE_PACKAGES := \
     gluon-tunneldigger-watchdog \
     gluon-alfred \
     gluon-multi-radio \
-   ff-ap-timer
+    ff-ap-timer \
+    ffX-migrate-to-4830
 #    gluon-pump \
 #   ff-ap-timer \
 #   ffgt-nachtruhe \
