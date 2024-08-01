@@ -15,8 +15,8 @@ includes some additional modules.
    1.4.0: v2021.1.x based, L2TP (tunneldigger) (>= 1.4.0~48 includes a WORKING gluon-migrate-ffbiv2, ~50 fflg-migrate-to-multidomain, ca. ~120 ffue-migrate-to-multidomain)
    1.5.0: v2022.1.x based, L2TP (tunneldigger) – tng only, short-lived tests
    1.6.0: v2023.2.x based, L2TP (tunneldigger) – tng only, short-lived tests
-   1.6.1: v2022.1.4 based, L2TP (tunneldigger) — new build process, NO migration support anymore (FFBI, FFLG, FFUE), possibly migration support from FFLIP-FW; til ~44 22.03.05, ~45 22.03.05, ~47 1.5-settings
-   1.7.0: v2023.2.x based, L2TP (tunneldigger)
+   1.6.1: v2022.1.4 based, L2TP (tunneldigger) — new build process, migration support from any Gluon-FW (to "zzz") as well as from FFLIP (to our "service regions")
+   1.7.0: v2023.2.x based, L2TP (tunneldigger) — aiming to release as 2.0
 
 For 1.5 and beyond, the patches applied to Gluon reside in site/patches and are applied against the plain Gluon tree at build time. Prior to that, we used a modified Gluon tree:
 
